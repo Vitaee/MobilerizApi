@@ -12,4 +12,4 @@ class Product(Base):
     photo_url = Column(String)
     category = Column(String)
     vendor_id = Column(String, ForeignKey("vendors.id"))
-    vendor = relationship("Vendor", back_populates="products")
+    vendor = relationship("Vendor", back_populates="products", lazy="subquery")

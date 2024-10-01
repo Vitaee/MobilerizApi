@@ -37,15 +37,15 @@ class ProductService(IProductService):
             # Fetch products from external API
             products_data = await self.vendor_api_adapter.fetch_all_products(page=page)
             # Process and save products
-            for product_data in products_data['data']:
+            for product_data in products_data:
                 product_in = ProductCreate(
-                    id=product_data['_id'],
-                    name=product_data['product_name'],
-                    description=product_data['product_description'],
-                    price=product_data['product_price'],
-                    photo_url=product_data['product_image'][0] if product_data['product_image'] else None,
-                    category=product_data['product_category'],
-                    vendor_id=product_data['product_brand_id']
+                    _id=product_data['_id'],
+                    product_name=product_data['product_name'],
+                    product_description=product_data['product_description'],
+                    product_price=float(product_data['product_price'].replace('₺', '').replace(',', '.')),
+                    product_image=str(product_data['product_image'][0]),
+                    product_category=product_data['product_category'],
+                    product_brand_id=product_data['product_brand_id']
                 )
                 await self.product_repository.create(product_in)
             products, pagination = await self.product_repository.get_all(page=page)

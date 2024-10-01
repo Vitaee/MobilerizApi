@@ -25,10 +25,6 @@ class VendorService(IVendorService):
                     brand_name=vendor_data['brand_name'],
                     brand_logo=vendor_data['brand_logo'],
                 )
-
-                print(vendor_in)
-
-                print('^^^^^^^^^ VENDOR IN ^^^^^^^^^^')
                 await self.vendor_repository.create(vendor_in)
             vendor = await self.vendor_repository.get_by_id(vendor_id)
         return vendor

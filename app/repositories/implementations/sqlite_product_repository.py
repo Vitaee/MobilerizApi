@@ -37,7 +37,8 @@ class SQLiteProductRepository(IProductRepository):
         return products, pagination
 
     async def create(self, product_in: ProductCreate) -> Product:
-        product = Product(**product_in.dict())
+        print(product_in.model_dump())
+        product = Product(**product_in.model_dump())
         self.db_session.add(product)
         await self.db_session.commit()
         await self.db_session.refresh(product)
