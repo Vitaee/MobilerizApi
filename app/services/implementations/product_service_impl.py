@@ -24,7 +24,7 @@ class ProductService(IProductService):
         if not product:
             # Send a message to Kafka to fetch the product via Flink
             self.kafka_producer.send_message(
-                topic=settings.KAFKA_TOPIC,
+                topic=settings.KAFKA_PRODUCT_REQ_BY_ID,
                 key=product_id,
                 message={"product_id": product_id},
             )
@@ -66,7 +66,7 @@ class ProductService(IProductService):
     async def request_product_from_kafka(self, product_id: str):
         # Send a message to Kafka to fetch the product via Flink
         self.kafka_producer.send_message(
-            topic=settings.KAFKA_TOPIC,
+            topic=settings.KAFKA_PRODUCT_REQ_BY_ID,
             key=product_id,
             message={"product_id": product_id},
         )

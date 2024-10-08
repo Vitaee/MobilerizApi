@@ -110,3 +110,10 @@ SQLite
 PostgreSQL
 SymmetricDS
 Virtual Environment (optional but recommended)
+
+
+## Common Commands
+- uvicorn app.main:app --reload
+
+- docker exec -it kafka-docker-kafka-1 kafka-topics --create --topic product_by_id --bootstrap-server localhost:29092 --replication-factor 1 --partitions 1
+
