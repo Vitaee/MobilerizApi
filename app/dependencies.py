@@ -24,4 +24,4 @@ async def get_vendor_service():
         vendor_repository = SQLiteVendorRepository(db_session)
         kafka_producer = KafkaProducerAdapter()
         vendor_api_adapter = VendorAPIAdapter()
-        yield  VendorService(vendor_repository, vendor_api_adapter)
+        yield  VendorService(vendor_repository, vendor_api_adapter, kafka_producer)

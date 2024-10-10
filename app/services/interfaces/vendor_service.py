@@ -5,10 +5,6 @@ from app.domain.schemas.vendor import Vendor, VendorCreate, VendorUpdate
 
 class IVendorService(ABC):
     @abstractmethod
-    async def get_vendor(self, vendor_id: str) -> Optional[Vendor]:
-        pass
-
-    @abstractmethod
     async def get_vendors(self) -> List[Vendor]:
         pass
 

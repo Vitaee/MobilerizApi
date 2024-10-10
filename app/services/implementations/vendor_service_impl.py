@@ -3,45 +3,28 @@ from app.services.interfaces.vendor_service import IVendorService
 from app.repositories.interfaces.vendor_repository import IVendorRepository
 from app.domain.schemas.vendor import Vendor, VendorCreate, VendorUpdate
 from app.adapters.external_apis.vendor_api_adapter import VendorAPIAdapter
-
+from app.adapters.kafka.kafka_producer import KafkaProducerAdapter
+from app.core.config import settings
 
 class VendorService(IVendorService):
     def __init__(
         self,
         vendor_repository: IVendorRepository,
         vendor_api_adapter: VendorAPIAdapter,
+        kafka_producer: KafkaProducerAdapter,
     ):
         self.vendor_repository = vendor_repository
         self.vendor_api_adapter = vendor_api_adapter
-
-    async def get_vendor(self, vendor_id: str) -> Optional[Vendor]:
-        vendor = await self.vendor_repository.get_by_id(vendor_id)
-        if not vendor:
-            # Fetch vendor from external API
-            vendors_data = await self.vendor_api_adapter.fetch_vendors()
-            for vendor_data in vendors_data:
-                vendor_in = VendorCreate(
-                    id=vendor_data['_id'],
-                    brand_name=vendor_data['brand_name'],
-                    brand_logo=vendor_data['brand_logo'],
-                )
-                await self.vendor_repository.create(vendor_in)
-            vendor = await self.vendor_repository.get_by_id(vendor_id)
-        return vendor
+        self.kafka_producer = kafka_producer
 
     async def get_vendors(self) -> List[Vendor]:
         vendors = await self.vendor_repository.get_all()
         if not vendors:
-            # Fetch vendors from external API
-            vendors_data = await self.vendor_api_adapter.fetch_vendors()
-            for vendor_data in vendors_data:
-                vendor_in = VendorCreate(
-                    _id=vendor_data['_id'],
-                    brand_name=vendor_data['brand_name'],
-                    brand_logo=vendor_data['brand_logo'],
-                )
-                await self.vendor_repository.create(vendor_in)
-            vendors = await self.vendor_repository.get_all()
+            self.kafka_producer.send_message(
+                topic=settings.KAFKA_VENDOR_REQUESTS,
+                key='vendors',
+                message={"vendors": 1},
+            )
         return vendors
 
     async def create_vendor(self, vendor_in: VendorCreate) -> Vendor:

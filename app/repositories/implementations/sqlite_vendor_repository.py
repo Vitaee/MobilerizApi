@@ -10,13 +10,6 @@ class SQLiteVendorRepository(IVendorRepository):
     def __init__(self, db_session: Session):
         self.db_session = db_session
 
-    async def get_by_id(self, vendor_id: str) -> Optional[Vendor]:
-        result = await self.db_session.execute(
-            select(Vendor).filter(Vendor.id == vendor_id)
-        )
-        vendor = result.scalar_one_or_none()
-        return vendor
-
     async def get_all(self) -> List[Vendor]:
         result = await self.db_session.execute(select(Vendor))
         vendors = result.scalars().all()

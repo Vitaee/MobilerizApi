@@ -6,10 +6,6 @@ from app.domain.models.vendor import Vendor
 
 class IVendorRepository(ABC):
     @abstractmethod
-    async def get_by_id(self, vendor_id: str) -> Optional[Vendor]:
-        pass
-
-    @abstractmethod
     async def get_all(self) -> List[Vendor]:
         pass
 

@@ -7,10 +7,6 @@ from app.domain.schemas.pagination import Pagination
 
 class IProductRepository(ABC):
     @abstractmethod
-    async def get_by_id(self, product_id: str) -> Optional[Product]:
-        pass
-
-    @abstractmethod
     async def get_all(self, page: int = 1, per_page: int = 10) -> Tuple[List[Product], Pagination]:
         pass
 

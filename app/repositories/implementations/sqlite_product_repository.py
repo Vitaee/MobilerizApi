@@ -12,13 +12,6 @@ class SQLiteProductRepository(IProductRepository):
     def __init__(self, db_session: Session):
         self.db_session = db_session
 
-    async def get_by_id(self, product_id: str) -> Optional[Product]:
-        result = await self.db_session.execute(
-            select(Product).filter(Product.id == product_id)
-        )
-        product = result.scalar_one_or_none()
-        return product
-
     async def get_all(self, page: int = 1, per_page: int = 10) -> Tuple[List[Product], Pagination]:
         offset = (page - 1) * per_page
         total = await self.db_session.execute(select(func.count(Product.id)))

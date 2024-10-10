@@ -6,10 +6,6 @@ from app.domain.schemas.pagination import Pagination
 
 class IProductService(ABC):
     @abstractmethod
-    async def get_product(self, product_id: str) -> Optional[Product]:
-        pass
-
-    @abstractmethod
     async def get_products(self, page: int = 1) -> Tuple[List[Product], Pagination]:
         pass
 

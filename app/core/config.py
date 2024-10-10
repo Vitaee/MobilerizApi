@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     KAFKA_BOOTSTRAP_SERVERS: str = "localhost:29092"
     KAFKA_TOPIC_REQUESTS: str = "product_requests"
     KAFKA_TOPIC_RESPONSES: str = "product_responses"
-    KAFKA_PRODUCT_REQ_BY_ID: str = 'product_by_id'
+    KAFKA_VENDOR_REQUESTS: str = 'vendors'
 
     # External API configurations
     VENDOR_API_URL: str = "http://localhost/makyaj-api/brand/"
